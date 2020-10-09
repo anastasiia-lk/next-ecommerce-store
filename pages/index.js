@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../components/Layout';
+import '../pages/index.js';
 
 export default function Home() {
   return (
@@ -8,20 +9,39 @@ export default function Home() {
       <Head>
         <title>Henkel shop</title>
       </Head>
-      <main
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: 30,
-          marginbottom: 40,
-        }}
-      >
-        <img src="/wash.jpg" alt="Wash" />
-
-        <img src="/clean.jpg" alt="Clean" />
-        <Link href="/users/user-list">
-          <a>User List</a>
-        </Link>
+      <main className="location">
+        <div className="box1">
+          <Link href="/laundry">
+            <a className="homePage">Laundry</a>
+          </Link>
+        </div>
+        <div className="box2">
+          <Link href="/homecare">
+            <a className="homePage">Home Care</a>
+          </Link>
+        </div>
+        <div className="box3">
+          <img
+            src="/wash.jpg"
+            alt="Wash"
+            style={{
+              margin: 10,
+              height: 500,
+              width: 350,
+            }}
+          />
+        </div>
+        <div className="box4">
+          <img
+            src="/clean.jpg"
+            alt="Clean"
+            style={{
+              margin: 40,
+              height: 500,
+              width: 350,
+            }}
+          />
+        </div>
       </main>
     </Layout>
   );
