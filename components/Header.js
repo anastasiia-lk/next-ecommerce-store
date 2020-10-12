@@ -28,7 +28,7 @@ export default function Header() {
           <a>Home</a>
         </Link>{' '}
         <Link href="/shoppingCart">
-          <a>My basket</a>
+          <a>My shopping cart</a>
         </Link>
       </div>
     </header>
