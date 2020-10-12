@@ -11,7 +11,7 @@ export const users = [
     cycles: '60',
     content: '1 bottle',
     tax: '20% VAT',
-    price: '17.99 EUR / Pkg',
+    price: 17.99,
   },
   {
     id: '2',
@@ -25,7 +25,7 @@ export const users = [
     cycles: '22',
     content: '1 pack / package',
     tax: '20% VAT',
-    price: '7.49 EUR / Pkg',
+    price: 7.49,
   },
   {
     id: '3',
@@ -39,7 +39,7 @@ export const users = [
     cycles: '80',
     content: '1 pack / package',
     tax: '20% VAT',
-    price: '14.15 EUR / Pkg',
+    price: 14.15,
   },
   {
     id: '4',
@@ -53,7 +53,7 @@ export const users = [
     cycles: '60',
     content: '1 bottle',
     tax: '20% VAT',
-    price: '17.99 EUR / Pkg',
+    price: 17.99,
   },
   {
     id: '5',
@@ -67,7 +67,7 @@ export const users = [
     cycles: '22',
     content: '1 pack / package',
     tax: '20% VAT',
-    price: '7.49 EUR / Pkg',
+    price: 7.49,
   },
   {
     id: '6',
@@ -81,6 +81,6 @@ export const users = [
     cycles: '80',
     content: '1 pack / package',
     tax: '20% VAT',
-    price: '14.15 EUR / Pkg',
+    price: 14.15,
   },
 ];

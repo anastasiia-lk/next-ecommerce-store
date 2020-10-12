@@ -5,6 +5,15 @@ import Link from 'next/link';
 import nextCookies from 'next-cookies';
 
 export default function shoppingCart(props) {
+  // const [total, setTotal] = useState(0);
+  // const changeTotal = () => {
+  //   const newTotal = 0;
+  //   props.followingFromCookie.map(
+  //     (user) => (newTotal = newTotal + user.quantity * user.price),
+  //   );
+  //   setTotal(newTotal);
+  // };
+
   return (
     <Layout>
       <h1 className="homePage">Shopping Cart</h1>
@@ -14,19 +23,23 @@ export default function shoppingCart(props) {
           <button>Back to shop</button>
         </a>
       </Link>
-
       <div className="shoppingCardGrid">
         <div>Product</div>
         <div>Description</div>
         <div>Quantity</div>
-        <div>Price</div>
+        <div>Price (EUR/Pkg)</div>
       </div>
-      {/* <div className="shoppingCardGrid">
-        <div>{props.followingFromCookie[0].name}</div>
-        <div>{props.followingFromCookie[0].description}</div>
-        <div>{props.followingFromCookie[0].quantity}</div>
-        <div>{props.followingFromCookie[0].price}</div>
-      </div> */}
+      {props.followingFromCookie.map((user) => {
+        return (
+          <div className="shoppingCardGrid">
+            <div>{user.name}</div>
+            <div>{user.description}</div>
+            <div>{user.quantity}</div>
+            <div>{user.price}</div>
+          </div>
+        );
+      })}
+      {/* <div>Total:{total}</div> */}
     </Layout>
   );
 }

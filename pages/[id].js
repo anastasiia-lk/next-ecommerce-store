@@ -1,9 +1,19 @@
 import Layout from '../components/Layout';
 import { users } from '../util/database';
 import Head from 'next/head';
+import Link from 'next/link';
+import { toggleFollowUserInCookie } from '../util/cookies';
+import nextCookies from 'next-cookies';
+import { useState } from 'react';
 
 export default function User(props) {
   const user = users.find((currentUser) => currentUser.id === props.id);
+  // const [total, setTotal] = useState(0);
+  // const changeTotal = () => {
+  // const newUser = users.find((currentUser) => currentUser.id === props.id);
+  // const newTotal = total + newUser.price * newUser.quantity;
+  // setTotal(newTotal);
+  //  };
   return (
     <Layout>
       <h1 className="homePage">Product description</h1>
@@ -43,10 +53,49 @@ export default function User(props) {
                 <br />
                 <br />
                 <br />
-                <input type="text" placeholder="1" />
+                <input type="text" placeholder="1" id="quantity" />
                 <br />
                 <br />
                 <br />
+                <button
+                  onClick={
+                    // Any onClick functions will be only
+                    // run in the browser
+                    () => {
+                      // Save the "following" attribute of the user
+                      // in the cookie
+
+                      // const following = toggleFollowUserInCookie(user.id);
+                      // product[0].product = new Image();
+                      // product[0].src = 'persilGel.jpg';
+                      const quantity = document.getElementById('quantity')
+                        .value;
+                      // changeTotal();
+                      toggleFollowUserInCookie(user, quantity);
+
+                      // setUsersWithFollowingData(
+                      //   users.map((currentUser) => {
+                      //     // If the id of the user is in the
+                      //     // array, then set following to true
+                      //     // following = ['1', '2']
+                      //     return {
+                      //       ...currentUser,
+                      //       following: following.includes(currentUser.id),
+                      //     };
+                      //   }),
+                      // );
+                    }
+                  }
+                >
+                  Add to cart
+                </button>
+                <br />
+                <br />
+                <Link href="/laundry">
+                  <a>
+                    <button>Back to shop</button>
+                  </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -59,7 +108,7 @@ export default function User(props) {
 //This is run by Next.js BEFORE the component
 // above is run, and passes in the props
 export function getServerSideProps(context) {
-  console.log(context);
+  // console.log(context);
   return {
     props: { id: context.query.id },
   };
