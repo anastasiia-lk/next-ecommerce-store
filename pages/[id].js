@@ -9,11 +9,11 @@ import { useState } from 'react';
 export default function User(props) {
   const user = users.find((currentUser) => currentUser.id === props.id);
   // const [total, setTotal] = useState(0);
-  // const changeTotal = () => {
-  // const newUser = users.find((currentUser) => currentUser.id === props.id);
-  // const newTotal = total + newUser.price * newUser.quantity;
-  // setTotal(newTotal);
-  //  };
+  // function ChangeTotal(user) {
+  //   const newTotal = total + user.quantity * user.price;
+  //   setTotal(newTotal);
+  //   return newTotal;
+  // }
   return (
     <Layout>
       <h1 className="homePage">Product description</h1>
@@ -72,6 +72,7 @@ export default function User(props) {
                         .value;
                       // changeTotal();
                       toggleFollowUserInCookie(user, quantity);
+                      // changeTotal(user);
 
                       // setUsersWithFollowingData(
                       //   users.map((currentUser) => {

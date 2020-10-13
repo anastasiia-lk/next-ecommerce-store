@@ -1,4 +1,5 @@
 import cookie from 'js-cookie';
+import { users } from '../database';
 
 export function getFollowingFromCookies() {
   // Use "|| []" in order to use a default
@@ -14,10 +15,12 @@ export function toggleFollowUserInCookie(id, newQuantity) {
   let newFollowing;
 
   const newId = {
+    id: id.id,
     name: id.name,
     description: id.description,
     quantity: newQuantity,
     price: id.price,
+    img: id.img,
     // total: newTotal,
   };
 
@@ -34,6 +37,15 @@ export function toggleFollowUserInCookie(id, newQuantity) {
   //   // }
   // console.log(newFollowing);
   cookie.set('following', newFollowing);
+  console.log(newFollowing);
+  return newFollowing;
+}
 
+export default function DeleteFunction(id) {
+  // ['1', '3']
+  const following = getFollowingFromCookies();
+  let newFollowing;
+  newFollowing = following.filter((user) => user.id !== id);
+  cookie.set('following', newFollowing);
   return newFollowing;
 }
