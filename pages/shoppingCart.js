@@ -4,17 +4,15 @@ import Head from 'next/head';
 import Link from 'next/link';
 import nextCookies from 'next-cookies';
 import DeleteFunction from '../util/cookies.js';
-import ChangeTotal from './[id].js';
 
 export default function shoppingCart(props) {
   // console.log('Props', props);
   const [productList, setProductList] = useState(props.followingFromCookie);
-  // const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(0);
+
   // function changeTotal() {
-  //   let newTotal = 0;
-  //   props.followingFromCookie.map(
-  //     (user) => (newTotal = newTotal + user.quantity * user.price),
-  //   );
+  let newTotal = 0;
+  productList.map((user) => (newTotal = newTotal + user.quantity * user.price));
   //   return newTotal;
   // }
 
@@ -62,10 +60,10 @@ export default function shoppingCart(props) {
             >
               Delete item
             </button>
-            {/* <div>Total: {ChangeTotal}</div> */}
           </div>
         );
       })}
+      <div>Total: {newTotal}</div>
     </Layout>
   );
 }

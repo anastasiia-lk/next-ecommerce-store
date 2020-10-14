@@ -53,7 +53,11 @@ export default function User(props) {
                 <br />
                 <br />
                 <br />
-                <input type="text" placeholder="1" id="quantity" />
+                <input
+                  type="number"
+                  placeholder="Enter quantity"
+                  id="quantity"
+                />
                 <br />
                 <br />
                 <br />
@@ -68,11 +72,11 @@ export default function User(props) {
                       // const following = toggleFollowUserInCookie(user.id);
                       // product[0].product = new Image();
                       // product[0].src = 'persilGel.jpg';
-                      const quantity = document.getElementById('quantity')
-                        .value;
+                      const quantity =
+                        document.getElementById('quantity').value * 1;
                       // changeTotal();
                       toggleFollowUserInCookie(user, quantity);
-                      // changeTotal(user);
+                      // ChangeTotal(user);
 
                       // setUsersWithFollowingData(
                       //   users.map((currentUser) => {
