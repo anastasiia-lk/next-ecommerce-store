@@ -1,5 +1,5 @@
 import cookie from 'js-cookie';
-import { users } from '../database';
+import { products } from '../database';
 
 export function getFollowingFromCookies() {
   // Use "|| []" in order to use a default
@@ -8,7 +8,7 @@ export function getFollowingFromCookies() {
   return following;
 }
 
-export function toggleFollowUserInCookie(product, newQuantity) {
+export function toggleFollowProductInCookie(product, newQuantity) {
   // ['1', '3']
   const following = getFollowingFromCookies();
 
@@ -35,21 +35,19 @@ export function toggleFollowUserInCookie(product, newQuantity) {
   //   console.log('1', newFollowing);
   // } else {
   const checkProduct = following.filter((item) => item.id === newProduct.id);
-  console.log('2', checkProduct);
+  console.log('1', checkProduct);
   const updatedFollowing = following.filter(
     (item) => item.id !== newProduct.id,
   );
-  console.log('3', updatedFollowing);
+  console.log('2', updatedFollowing);
   if (checkProduct.length === 0) {
     newFollowing = [...following, newProduct];
-    console.log('4', newFollowing);
+    console.log('3', newFollowing);
   } else {
     newProduct.quantity = checkProduct[0].quantity + newQuantity;
-    console.log('7', checkProduct.quantity);
-    console.log('8', newQuantity);
-    console.log('5', newProduct.quantity);
+    console.log('4', newProduct.quantity);
     newFollowing = [...updatedFollowing, newProduct];
-    console.log('6', newFollowing);
+    console.log('5', newFollowing);
   }
 
   // if (!checkProduct) {
@@ -86,7 +84,7 @@ export default function DeleteFunction(id) {
   // ['1', '3']
   const following = getFollowingFromCookies();
   let newFollowing;
-  newFollowing = following.filter((user) => user.id !== id);
+  newFollowing = following.filter((product) => product.id !== id);
   cookie.set('following', newFollowing);
   return newFollowing;
 }

@@ -1,13 +1,15 @@
 import Layout from '../components/Layout';
-import { users } from '../util/database';
+// import { users } from '../util/database';
 import Head from 'next/head';
 import Link from 'next/link';
-import { toggleFollowUserInCookie } from '../util/cookies';
+import { toggleFollowProductInCookie } from '../util/cookies';
 import nextCookies from 'next-cookies';
 import { useState } from 'react';
 
-export default function User(props) {
-  const user = users.find((currentUser) => currentUser.id === props.id);
+export default function Product(props) {
+  const product = props.products.find(
+    (currentProduct) => currentProduct.id === props.id,
+  );
   // const [total, setTotal] = useState(0);
   // function ChangeTotal(user) {
   //   const newTotal = total + user.quantity * user.price;
@@ -21,15 +23,15 @@ export default function User(props) {
         <div class="grid-trDescription">
           <div class="grid-tdDescription">
             <div class="itemDescription">
-              <img src={user.img} alt="persilGel" />
+              <img src={product.img} alt="persilGel" />
             </div>
           </div>
           <div class="grid-tdDescription">
             <div class="itemDescription">
-              <div class="titleDescription">{user.name}</div>
+              <div class="titleDescription">{product.name}</div>
               <br />
               <div class="subTitleDescription">
-                {user.description}
+                {product.description}
                 <br />
                 <br />
                 <br />
@@ -37,19 +39,19 @@ export default function User(props) {
               </div>
               <br />
               <div class="textDescription">
-                Type of detergent: {user.type}
+                Type of detergent: {product.type}
                 <br />
-                Consistency: {user.consistency}
+                Consistency: {product.consistency}
                 <br />
-                Capacity in liters: {user.capacity}
+                Capacity in liters: {product.capacity}
                 <br />
-                Wash cycles: {user.cycles}
+                Wash cycles: {product.cycles}
                 <br />
-                Content: {user.content}
+                Content: {product.content}
                 <br />
-                Tax: {user.tax}
+                Tax: {product.tax}
                 <br />
-                Price: {user.price}
+                Price: {product.price}
                 <br />
                 <br />
                 <br />
@@ -75,7 +77,7 @@ export default function User(props) {
                       const quantity =
                         document.getElementById('quantity').value * 1;
                       // changeTotal();
-                      toggleFollowUserInCookie(user, quantity);
+                      toggleFollowProductInCookie(product, quantity);
                       // ChangeTotal(user);
 
                       // setUsersWithFollowingData(
@@ -112,9 +114,13 @@ export default function User(props) {
 
 //This is run by Next.js BEFORE the component
 // above is run, and passes in the props
-export function getServerSideProps(context) {
+export async function getServerSideProps(context) {
+  // import { users } from '../util/database';
+  const { getProducts } = await import('../util/database');
+  const newProducts = await getProducts();
+  const products = newProducts || [];
   // console.log(context);
   return {
-    props: { id: context.query.id },
+    props: { id: context.query.id, products: products },
   };
 }

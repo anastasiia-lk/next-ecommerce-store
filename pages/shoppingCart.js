@@ -12,13 +12,13 @@ export default function shoppingCart(props) {
 
   // function changeTotal() {
   let newTotal = 0;
-  productList.map((user) => (newTotal = newTotal + user.quantity * user.price));
+  productList.map((product) => (newTotal = newTotal + product.quantity * product.price));
   //   return newTotal;
   // }
 
   // const [productList, setProductList] = useState(props.followingFromCookie);
-  function changeShoppingCart(user) {
-    const deleteItem = user.id;
+  function changeShoppingCart(product) {
+    const deleteItem = product.id;
     const updatedCookie = DeleteFunction(deleteItem);
     // const newTotal = total + user.price * user.quantity;
     // console.log(newTotal);
@@ -43,20 +43,20 @@ export default function shoppingCart(props) {
         <div>Price (EUR/Pkg)</div>
         <div></div>
       </div>
-      {productList.map((user) => {
+      {productList.map((product) => {
         return (
           // <Products product={user} />
           <div className="shoppingCardGrid">
-            <img src={user.img} alt="persilGel" />
-            <div>{user.name}</div>
-            <div>{user.description}</div>
-            <div>{user.quantity}</div>
-            <div>{user.price}</div>
+            <img src={product.img} alt="persilGel" />
+            <div>{product.name}</div>
+            <div>{product.description}</div>
+            <div>{product.quantity}</div>
+            <div>{product.price}</div>
             <button
               onClick={() => {
-                changeShoppingCart(user);
+                changeShoppingCart(product);
               }}
-              key={user.id}
+              key={product.id}
             >
               Delete item
             </button>
