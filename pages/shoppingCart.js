@@ -12,7 +12,9 @@ export default function shoppingCart(props) {
 
   // function changeTotal() {
   let newTotal = 0;
-  productList.map((product) => (newTotal = newTotal + product.quantity * product.price));
+  productList.map(
+    (product) => (newTotal = newTotal + product.quantity * product.price),
+  );
   //   return newTotal;
   // }
 

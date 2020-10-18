@@ -5,33 +5,49 @@ import Link from 'next/link';
 import { toggleFollowProductInCookie } from '../util/cookies';
 import nextCookies from 'next-cookies';
 import { useState } from 'react';
+import Header from '../components/Header';
 
 export default function Product(props) {
-  const product = props.products.find(
-    (currentProduct) => currentProduct.id === props.id,
-  );
-  // const [total, setTotal] = useState(0);
-  // function ChangeTotal(user) {
-  //   const newTotal = total + user.quantity * user.price;
-  //   setTotal(newTotal);
-  //   return newTotal;
-  // }
+  // const product = props.products.find(
+  //   (currentProduct) => currentProduct.id === props.id,
+  // );
+  // // const [total, setTotal] = useState(0);
+  // // function ChangeTotal(user) {
+  // //   const newTotal = total + user.quantity * user.price;
+  // //   setTotal(newTotal);
+  // //   return newTotal;
+  // // }
+
+  if (!props.product) {
+    return (
+      <Layout>
+        <Head>
+          <title>Product not found</title>
+        </Head>
+        Product not found
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
+      <Head>
+        <title>Single product</title>
+      </Head>
       <h1 className="homePage">Product description</h1>
       <div class="gridDescription">
         <div class="grid-trDescription">
           <div class="grid-tdDescription">
             <div class="itemDescription">
-              <img src={product.img} alt="persilGel" />
+              <img src={props.product.img} alt="persilGel" />
             </div>
           </div>
           <div class="grid-tdDescription">
             <div class="itemDescription">
-              <div class="titleDescription">{product.name}</div>
+              <div class="titleDescription">{props.product.name}</div>
               <br />
               <div class="subTitleDescription">
-                {product.description}
+                {props.product.description}
                 <br />
                 <br />
                 <br />
@@ -39,19 +55,19 @@ export default function Product(props) {
               </div>
               <br />
               <div class="textDescription">
-                Type of detergent: {product.type}
+                Type of detergent: {props.product.type}
                 <br />
-                Consistency: {product.consistency}
+                Consistency: {props.product.consistency}
                 <br />
-                Capacity in liters: {product.capacity}
+                Capacity in liters: {props.product.capacity}
                 <br />
-                Wash cycles: {product.cycles}
+                Wash cycles: {props.product.cycles}
                 <br />
-                Content: {product.content}
+                Content: {props.product.content}
                 <br />
-                Tax: {product.tax}
+                Tax: {props.product.tax}
                 <br />
-                Price: {product.price}
+                Price: {props.product.price}
                 <br />
                 <br />
                 <br />
@@ -77,7 +93,7 @@ export default function Product(props) {
                       const quantity =
                         document.getElementById('quantity').value * 1;
                       // changeTotal();
-                      toggleFollowProductInCookie(product, quantity);
+                      toggleFollowProductInCookie(props.product, quantity);
                       // ChangeTotal(user);
 
                       // setUsersWithFollowingData(
@@ -115,12 +131,16 @@ export default function Product(props) {
 //This is run by Next.js BEFORE the component
 // above is run, and passes in the props
 export async function getServerSideProps(context) {
-  // import { users } from '../util/database';
-  const { getProducts } = await import('../util/database');
-  const newProducts = await getProducts();
-  const products = newProducts || [];
-  // console.log(context);
+  // import { products } from '../util/database';
+  const id = context.query.id;
+  // const { getProducts } = await import('../util/database')
+  const { getProductById } = await import('../util/database');
+  const product = await getProductById(id);
+
+  const props = {};
+
+  if (product) props.product = product;
   return {
-    props: { id: context.query.id, products: products },
+    props: props,
   };
 }
