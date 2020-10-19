@@ -7,6 +7,9 @@ export default function Laundry(props) {
   return (
     <div>
       <Layout>
+        <Head>
+          <title>Laundry</title>
+        </Head>
         <ul className="products clearfix">
           {props.products.map((product) => {
             return (

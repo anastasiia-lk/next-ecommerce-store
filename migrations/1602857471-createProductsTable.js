@@ -21,6 +21,6 @@ exports.up = async (sql) => {
 exports.down = async (sql) => {
   // just in case...
   await sql`
-	DROP TABLE IF EXISTS users;
+	DROP TABLE IF EXISTS products;
 	`;
 };

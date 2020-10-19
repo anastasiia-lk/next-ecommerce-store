@@ -2,7 +2,7 @@ import Layout from '../components/Layout';
 // import { users } from '../util/database';
 import Head from 'next/head';
 import Link from 'next/link';
-import { toggleFollowProductInCookie } from '../util/cookies';
+import { productInCookie } from '../util/cookies';
 import nextCookies from 'next-cookies';
 import { useState } from 'react';
 import Header from '../components/Header';
@@ -93,7 +93,7 @@ export default function Product(props) {
                       const quantity =
                         document.getElementById('quantity').value * 1;
                       // changeTotal();
-                      toggleFollowProductInCookie(props.product, quantity);
+                      productInCookie(props.product, quantity);
                       // ChangeTotal(user);
 
                       // setUsersWithFollowingData(

@@ -29,6 +29,17 @@ export async function getProductById(id) {
   return products[0];
 }
 
+export async function getProductByIds(ids) {
+  if (ids.length === 0) {
+    return [];
+  }
+  const products = await sql`
+    SELECT * FROM products WHERE
+    id IN (${ids})
+  `;
+  return products;
+}
+
 export async function updateProductById(id, product) {
   if (!/^\d+$/.test(id)) return undefined;
   const products = await sql`

@@ -1,27 +1,21 @@
 import cookie from 'js-cookie';
-import { products } from '../database';
 
-export function getFollowingFromCookies() {
+export function getProductListFromCookies() {
   // Use "|| []" in order to use a default
   // value, in case this is undefined
-  const following = cookie.getJSON('following') || [];
-  return following;
+  const productList = cookie.getJSON('productList') || [];
+  return productList;
 }
 
-export function toggleFollowProductInCookie(product, newQuantity) {
+export function productInCookie(product, newQuantity) {
   // ['1', '3']
-  const following = getFollowingFromCookies();
+  const productList = getProductListFromCookies();
 
-  let newFollowing;
+  let newProductList;
 
   const newProduct = {
     id: product.id,
-    name: product.name,
-    description: product.description,
     quantity: newQuantity,
-    price: product.price,
-    img: product.img,
-    // total: newTotal,
   };
 
   // following.find(function checkProduct(product) {
@@ -34,20 +28,20 @@ export function toggleFollowProductInCookie(product, newQuantity) {
   //   newFollowing = [...following, newId];
   //   console.log('1', newFollowing);
   // } else {
-  const checkProduct = following.filter((item) => item.id === newProduct.id);
+  const checkProduct = productList.filter((item) => item.id === newProduct.id);
   console.log('1', checkProduct);
-  const updatedFollowing = following.filter(
+  const updatedProductList = productList.filter(
     (item) => item.id !== newProduct.id,
   );
-  console.log('2', updatedFollowing);
+  console.log('2', updatedProductList);
   if (checkProduct.length === 0) {
-    newFollowing = [...following, newProduct];
-    console.log('3', newFollowing);
+    newProductList = [...productList, newProduct];
+    console.log('3', newProductList);
   } else {
     newProduct.quantity = checkProduct[0].quantity + newQuantity;
     console.log('4', newProduct.quantity);
-    newFollowing = [...updatedFollowing, newProduct];
-    console.log('5', newFollowing);
+    newProductList = [...updatedProductList, newProduct];
+    console.log('5', newProductList);
   }
 
   // if (!checkProduct) {
@@ -62,7 +56,7 @@ export function toggleFollowProductInCookie(product, newQuantity) {
   //   }
   // }
 
-  console.log('New cookie', newFollowing);
+  console.log('New cookie', newProductList);
 
   // if (following.includes(id)) {
   //   //   // If the user id is already in the following
@@ -76,15 +70,16 @@ export function toggleFollowProductInCookie(product, newQuantity) {
   //   //   // newFollowing = following.concat(id);
   //   // }
   // console.log(newFollowing);
-  cookie.set('following', newFollowing);
-  return newFollowing;
+  cookie.set('productList', newProductList);
+  return newProductList;
 }
 
-export default function DeleteFunction(id) {
+export default function deleteFunction(id) {
   // ['1', '3']
-  const following = getFollowingFromCookies();
-  let newFollowing;
-  newFollowing = following.filter((product) => product.id !== id);
-  cookie.set('following', newFollowing);
-  return newFollowing;
+  const productList = getProductListFromCookies();
+  const newProductListInCookies = productList.filter(
+    (product) => product.id !== id,
+  );
+  cookie.set('productList', newProductListInCookies);
+  return newProductListInCookies;
 }
