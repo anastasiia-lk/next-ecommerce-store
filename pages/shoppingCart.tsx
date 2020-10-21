@@ -4,26 +4,92 @@ import Head from 'next/head';
 import Link from 'next/link';
 import nextCookies from 'next-cookies';
 import deleteFunction from '../util/cookies.js';
+// import { GetServerSideProps } from 'next';
+import { GetServerSidePropsContext } from 'next';
 
-export default function ShoppingCart(props) {
-  const [productList, setProductList] = useState([]);
+type Product = {
+  id: number;
+  name: string;
+  description: string;
+  img: string;
+  alt: string;
+  type: string;
+  consistency: string;
+  capacity: string;
+  cycles: string;
+  content: string;
+  tax: string;
+  price: number;
+};
+
+type Products = {
+  object: Product[];
+};
+
+type CookiesItem = {
+  id: number;
+  quantity: number;
+};
+
+type Cookies = {
+  object: CookiesItem[];
+};
+
+type CookiesMergeDBItem = {
+  id: number;
+  name: string;
+  description: string;
+  img: string;
+  alt: string;
+  type: string;
+  consistency: string;
+  capacity: string;
+  cycles: string;
+  content: string;
+  tax: string;
+  price: number;
+  quantity: number;
+};
+
+type CookiesMergeDB = CookiesMergeDBItem[];
+
+type Props = {
+  productListInCookies: CookiesItem[];
+  productFromDB: Product[];
+};
+
+export default function ShoppingCart(props: Props) {
+  const [productList, setProductList] = useState<CookiesMergeDB>([]);
   const [productListInCookies, setproductListInCookies] = useState(
     props.productListInCookies,
   );
   useEffect(() => {
+    let newProduct;
     const updatedProductList = productListInCookies.map((item) => {
       const findInDB = props.productFromDB.find(
         (product) => product.id === item.id,
       );
-      // console.log('findIdInCookies', findIdInCookies);
+      if (findInDB !== undefined) {
+        // create the copy of the findInDB and add new property "quantity"
+        // in JS : findInDB.quantity = item.quantity;
+        newProduct = { ...findInDB, quantity: item.quantity };
+      } else {
+        newProduct = undefined;
+      }
 
-      findInDB.quantity = item.quantity;
-      return findInDB;
+      return newProduct;
     });
-    setProductList(updatedProductList);
+    const filteredProductList = updatedProductList.filter((item) => {
+      if (item !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    setProductList(filteredProductList);
   }, [setProductList, productListInCookies, props.productFromDB]);
 
-  const [total, setTotal] = useState(0);
+  // const [total, setTotal] = useState(0);
 
   // function changeTotal() {
   let newTotal = 0;
@@ -34,23 +100,23 @@ export default function ShoppingCart(props) {
   // }
 
   // const [productList, setProductList] = useState(props.followingFromCookie);
-  function changeProductList(products, cookies) {
-    const newProductList = products.filter(function (element) {
-      return cookies.filter(function (item) {
-        return item.id === element.id;
-      });
-    });
-    return newProductList;
-    // const newProductList = products.map((item) => {
-    //   const findInCookies = cookies.filter((element) => element.id === item.id);
-    //   item = findInCookies;
-    //   // console.log('findIdInCookies', findIdInCookies);
-    //   return item;
-    // });
-    // const updatedProductList = products.map((item) => item !== undefined);
-    // return updatedProductList;
-  }
-  function changeShoppingCart(product) {
+  // function changeProductList(products: Products, cookies: Cookies) {
+  //   const newProductList = products.filter(function (element) {
+  //     return cookies.filter(function (item) {
+  //       return item.id === element.id;
+  //     });
+  //   });
+  //   return newProductList;
+  // const newProductList = products.map((item) => {
+  //   const findInCookies = cookies.filter((element) => element.id === item.id);
+  //   item = findInCookies;
+  //   // console.log('findIdInCookies', findIdInCookies);
+  //   return item;
+  // });
+  // const updatedProductList = products.map((item) => item !== undefined);
+  // return updatedProductList;
+  // }
+  function changeShoppingCart(product: CookiesMergeDBItem) {
     const deleteItem = product.id;
     console.log('deleteItem', deleteItem);
     const updatedProductList = deleteFunction(deleteItem);
@@ -110,13 +176,13 @@ export default function ShoppingCart(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   // nextCookies reads from context.req.headers.cookie
   const allCookies = nextCookies(context);
 
   // Use "|| []" in order to use a default
   // value, in case this is undefined
-  const productListInCookies = allCookies.productList || [];
+  const productListInCookies = (allCookies.productList as unknown) as CookiesItem[];
   const { getProductByIds } = await import('../util/database');
   const ids = productListInCookies.map((item) => {
     return item.id;
@@ -124,15 +190,15 @@ export async function getServerSideProps(context) {
   // console.log('productListInCookies', productListInCookies);
   const productFromDB = await getProductByIds(ids);
 
-  const updatedProductList = productFromDB.map((item) => {
-    const findIdInCookies = productListInCookies.filter(
-      (product) => product.id === item.id,
-    );
-    // console.log('findIdInCookies', findIdInCookies);
+  // const updatedProductList = productFromDB.map((item) => {
+  //   const findIdInCookies = productListInCookies.filter(
+  //     (product) => product.id === item.id,
+  //   );
+  //   // console.log('findIdInCookies', findIdInCookies);
 
-    item.quantity = findIdInCookies[0].quantity;
-    return item;
-  });
+  //   item.quantity = findIdInCookies[0].quantity;
+  //   return item;
+  // });
   /////////////////////////////////////////////////////////////
   // const idsInCookies = productListInCookies.map((item) => {
   //   return item.id;

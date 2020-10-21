@@ -6,8 +6,28 @@ import { productInCookie } from '../util/cookies';
 import nextCookies from 'next-cookies';
 import { useState } from 'react';
 import Header from '../components/Header';
+import { GetServerSidePropsContext } from 'next';
 
-export default function Product(props) {
+type ProductType = {
+  id: number;
+  name: string;
+  description: string;
+  img: string;
+  alt: string;
+  type: string;
+  consistency: string;
+  capacity: string;
+  cycles: string;
+  content: string;
+  tax: string;
+  price: number;
+};
+
+type Props = {
+  product?: ProductType;
+};
+
+export default function Product(props: Props) {
   // const product = props.products.find(
   //   (currentProduct) => currentProduct.id === props.id,
   // );
@@ -35,18 +55,18 @@ export default function Product(props) {
         <title>Single product</title>
       </Head>
       <h1 className="homePage">Product description</h1>
-      <div class="gridDescription">
-        <div class="grid-trDescription">
-          <div class="grid-tdDescription">
-            <div class="itemDescription">
+      <div className="gridDescription">
+        <div className="grid-trDescription">
+          <div className="grid-tdDescription">
+            <div className="itemDescription">
               <img src={props.product.img} alt="persilGel" />
             </div>
           </div>
-          <div class="grid-tdDescription">
-            <div class="itemDescription">
-              <div class="titleDescription">{props.product.name}</div>
+          <div className="grid-tdDescription">
+            <div className="itemDescription">
+              <div className="titleDescription">{props.product.name}</div>
               <br />
-              <div class="subTitleDescription">
+              <div className="subTitleDescription">
                 {props.product.description}
                 <br />
                 <br />
@@ -54,7 +74,7 @@ export default function Product(props) {
                 Product details:
               </div>
               <br />
-              <div class="textDescription">
+              <div className="textDescription">
                 Type of detergent: {props.product.type}
                 <br />
                 Consistency: {props.product.consistency}
@@ -130,14 +150,15 @@ export default function Product(props) {
 
 //This is run by Next.js BEFORE the component
 // above is run, and passes in the props
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   // import { products } from '../util/database';
+
   const id = context.query.id;
   // const { getProducts } = await import('../util/database')
   const { getProductById } = await import('../util/database');
   const product = await getProductById(id);
 
-  const props = {};
+  const props: Props = {};
 
   if (product) props.product = product;
   return {
