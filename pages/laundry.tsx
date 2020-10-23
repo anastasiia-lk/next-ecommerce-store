@@ -42,8 +42,8 @@ export default function Laundry(props: Props) {
           {props.products.map((product) => {
             return (
               <li className="product-wrapper" key={product.id}>
-                <Link href={`/${product.id}`} className="product">
-                  <a>
+                <Link href={`/${product.id}`}>
+                  <a className="product">
                     <div className="product-photo">
                       <img src={product.img} alt={product.alt} />
                     </div>
