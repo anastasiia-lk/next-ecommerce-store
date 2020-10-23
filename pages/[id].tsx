@@ -7,6 +7,8 @@ import nextCookies from 'next-cookies';
 import { useState } from 'react';
 import Header from '../components/Header';
 import { GetServerSidePropsContext } from 'next';
+import React, { ChangeEvent } from 'react';
+import cookie from 'js-cookie';
 
 type ProductType = {
   id: number;
@@ -37,7 +39,21 @@ export default function Product(props: Props) {
   // //   setTotal(newTotal);
   // //   return newTotal;
   // // }
-
+  const [items, setItems] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const value: string = event.target.value;
+    const newValue = Number(value);
+    setQuantity(newValue);
+  }
+  // console.log(itemsInCart);
+  function PrintItems() {
+    const itemsInCart = cookie.getJSON('productList') || [];
+    if (itemsInCart !== undefined) {
+      const newItems = itemsInCart.length;
+      setItems(newItems);
+    }
+  }
   if (!props.product) {
     return (
       <Layout>
@@ -50,7 +66,7 @@ export default function Product(props: Props) {
   }
 
   return (
-    <Layout>
+    <Layout items={items}>
       <Head>
         <title>Single product</title>
       </Head>
@@ -95,6 +111,7 @@ export default function Product(props: Props) {
                   type="number"
                   placeholder="Enter quantity"
                   id="quantity"
+                  onChange={handleChange}
                 />
                 <br />
                 <br />
@@ -110,24 +127,30 @@ export default function Product(props: Props) {
                       // const following = toggleFollowUserInCookie(user.id);
                       // product[0].product = new Image();
                       // product[0].src = 'persilGel.jpg';
-                      const quantity =
-                        document.getElementById('quantity').value * 1;
-                      // changeTotal();
+                      // const quantity = document.getElementById(
+                      //   'quantity',
+                      // ) as HTMLInputElement;
+                      // // changeTotal();
+                      // if (quantity) {
+                      //   const inputQuantity: string = quantity.value;
+                      // productInCookie(props.product, Number(inputQuantity));
                       productInCookie(props.product, quantity);
-                      // ChangeTotal(user);
-
-                      // setUsersWithFollowingData(
-                      //   users.map((currentUser) => {
-                      //     // If the id of the user is in the
-                      //     // array, then set following to true
-                      //     // following = ['1', '2']
-                      //     return {
-                      //       ...currentUser,
-                      //       following: following.includes(currentUser.id),
-                      //     };
-                      //   }),
-                      // );
+                      PrintItems();
                     }
+                    // ChangeTotal(user);
+
+                    // setUsersWithFollowingData(
+                    //   users.map((currentUser) => {
+                    //     // If the id of the user is in the
+                    //     // array, then set following to true
+                    //     // following = ['1', '2']
+                    //     return {
+                    //       ...currentUser,
+                    //       following: following.includes(currentUser.id),
+                    //     };
+                    //   }),
+                    // );
+                    // }
                   }
                 >
                   Add to cart

@@ -22,18 +22,14 @@ type Product = {
   price: number;
 };
 
-type Products = {
-  object: Product[];
-};
+type Products = Product[];
 
 type CookiesItem = {
   id: number;
   quantity: number;
 };
 
-type Cookies = {
-  object: CookiesItem[];
-};
+type Cookies = CookiesItem[];
 
 type CookiesMergeDBItem = {
   id: number;
@@ -63,30 +59,39 @@ export default function ShoppingCart(props: Props) {
   const [productListInCookies, setproductListInCookies] = useState(
     props.productListInCookies,
   );
+  const [items, setItems] = useState(0);
   useEffect(() => {
     let newProduct;
-    const updatedProductList = productListInCookies.map((item) => {
-      const findInDB = props.productFromDB.find(
-        (product) => product.id === item.id,
-      );
-      if (findInDB !== undefined) {
-        // create the copy of the findInDB and add new property "quantity"
-        // in JS : findInDB.quantity = item.quantity;
-        newProduct = { ...findInDB, quantity: item.quantity };
-      } else {
-        newProduct = undefined;
-      }
+    const updatedProductList = productListInCookies.reduce(
+      (reduceList: CookiesMergeDB, item) => {
+        const findInDB = props.productFromDB.find(
+          (product) => product.id === item.id,
+        );
+        if (findInDB !== undefined) {
+          // create the copy of the findInDB and add new property "quantity"
+          // in JS : findInDB.quantity = item.quantity;
+          newProduct = { ...findInDB, quantity: item.quantity };
+          reduceList = [...reduceList, newProduct];
+        }
+        // } else {
+        //   newProduct = undefined;
+        // }
 
-      return newProduct;
-    });
-    const filteredProductList = updatedProductList.filter((item) => {
-      if (item !== undefined) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    setProductList(filteredProductList);
+        // return newProduct;
+        return reduceList;
+      },
+      [],
+    );
+    // const filteredProductList = updatedProductList.filter((item) => {
+    //   return typeof item !== 'undefined';
+    //   if (item !== undefined) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // });
+    setProductList(updatedProductList);
+    setItems(updatedProductList.length);
   }, [setProductList, productListInCookies, props.productFromDB]);
 
   // const [total, setTotal] = useState(0);
@@ -132,7 +137,7 @@ export default function ShoppingCart(props: Props) {
   }
 
   return (
-    <Layout>
+    <Layout items={items}>
       <Head>
         <title>Shopping Cart</title>
       </Head>
@@ -144,12 +149,12 @@ export default function ShoppingCart(props: Props) {
         </a>
       </Link>
       <div className="shoppingCardGrid">
-        <div></div>
+        <div />
         <div>Product</div>
         <div>Description</div>
         <div>Quantity</div>
         <div>Price (EUR/Pkg)</div>
-        <div></div>
+        <div />
       </div>
       {productList.map((product) => {
         return (
@@ -171,25 +176,40 @@ export default function ShoppingCart(props: Props) {
           </div>
         );
       })}
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div>Total: {newTotal}</div>
+      <Link href="/checkout">
+        <a>
+          <button>Proceed to checkout</button>
+        </a>
+      </Link>
     </Layout>
   );
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // nextCookies reads from context.req.headers.cookie
+  let productFromDB;
   const allCookies = nextCookies(context);
 
   // Use "|| []" in order to use a default
   // value, in case this is undefined
-  const productListInCookies = (allCookies.productList as unknown) as CookiesItem[];
+  const productListInCookies =
+    ((allCookies.productList as unknown) as CookiesItem[]) || [];
   const { getProductByIds } = await import('../util/database');
-  const ids = productListInCookies.map((item) => {
-    return item.id;
-  });
-  // console.log('productListInCookies', productListInCookies);
-  const productFromDB = await getProductByIds(ids);
-
+  if (productListInCookies !== undefined) {
+    const ids = productListInCookies.map((item) => {
+      return item.id;
+    });
+    // console.log('productListInCookies', productListInCookies);
+    productFromDB = await getProductByIds(ids);
+  } else {
+    productFromDB = [];
+  }
   // const updatedProductList = productFromDB.map((item) => {
   //   const findIdInCookies = productListInCookies.filter(
   //     (product) => product.id === item.id,

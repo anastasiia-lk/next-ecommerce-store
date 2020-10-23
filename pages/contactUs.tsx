@@ -6,7 +6,7 @@ export default function ContactUs() {
   return (
     <Layout>
       <Head>
-        <title>Cintact Us</title>
+        <title>Contact Us</title>
       </Head>
       <h1 className="homePage">Contact Us</h1>
     </Layout>

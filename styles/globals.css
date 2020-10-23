@@ -352,3 +352,8 @@ button:hover {
   border-color: #f33434;
   background-color: #f33434;
 }
+
+.imgCart {
+  height: 50px;
+  vertical-align: middle;
+}

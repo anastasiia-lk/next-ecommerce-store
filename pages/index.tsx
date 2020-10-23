@@ -1,11 +1,19 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../components/Layout';
+import cookie from 'js-cookie';
 // import '../pages/index.js';
 
 export default function Home() {
+  let items;
+  const itemsInCart = cookie.getJSON('productList') || [];
+  if (itemsInCart !== undefined) {
+    items = itemsInCart.length;
+  } else {
+    items = 0;
+  }
   return (
-    <Layout>
+    <Layout items={items}>
       <Head>
         <title>Henkel shop</title>
       </Head>

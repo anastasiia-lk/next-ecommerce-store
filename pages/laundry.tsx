@@ -2,6 +2,7 @@ import Layout from '../components/Layout';
 import Head from 'next/head';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
+import cookie from 'js-cookie';
 // import { products } from '../util/database';
 
 type Product = {
@@ -24,9 +25,16 @@ type Props = {
 };
 
 export default function Laundry(props: Props) {
+  let items;
+  const itemsInCart = cookie.getJSON('productList') || [];
+  if (itemsInCart !== undefined) {
+    items = itemsInCart.length;
+  } else {
+    items = 0;
+  }
   return (
     <div>
-      <Layout>
+      <Layout items={items}>
         <Head>
           <title>Laundry</title>
         </Head>
