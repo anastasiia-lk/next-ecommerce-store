@@ -74,12 +74,14 @@ export function productInCookie(product, newQuantity) {
   return newProductList;
 }
 
-export default function deleteFunction(id) {
+export function deleteFunction(id) {
   // ['1', '3']
   const productList = getProductListFromCookies();
+  console.log('getProductListFromCookies', productList);
   const newProductListInCookies = productList.filter(
     (product) => product.id !== id,
   );
+  console.log('delete', newProductListInCookies);
   cookie.set('productList', newProductListInCookies);
   return newProductListInCookies;
 }
