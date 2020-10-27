@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import Head from 'next/head';
 import Link from 'next/link';
 import nextCookies from 'next-cookies';
-import deleteFunction from '../util/cookies.js';
+import { deleteFunction } from '../util/cookies.js';
 // import { GetServerSideProps } from 'next';
 import { GetServerSidePropsContext } from 'next';
 
