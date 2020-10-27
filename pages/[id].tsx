@@ -7,7 +7,7 @@ import nextCookies from 'next-cookies';
 import { useState } from 'react';
 import Header from '../components/Header';
 import { GetServerSidePropsContext } from 'next';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import cookie from 'js-cookie';
 
 type ProductType = {
@@ -41,6 +41,15 @@ export default function Product(props: Props) {
   // // }
   const [items, setItems] = useState(0);
   const [quantity, setQuantity] = useState(0);
+
+  useEffect(() => {
+    const itemsInCart = cookie.getJSON('productList') || [];
+    if (itemsInCart !== undefined) {
+      const newItems = itemsInCart.length;
+      setItems(newItems);
+    }
+  }, [setItems]);
+
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const value: string = event.target.value;
     const newValue = Number(value);
