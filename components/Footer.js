@@ -6,7 +6,7 @@ export default function Footer() {
       style={{
         display: 'flex',
         justifyContent: 'space-between',
-        padding: 30,
+        padding: 0,
         background:
           'linear-gradient(90deg, rgb(255, 0, 0) 0%, rgb(255, 200, 200) 35%, rgb(255,255,255) 100%)',
         marginbottom: 0,
