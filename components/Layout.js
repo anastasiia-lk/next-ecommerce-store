@@ -4,15 +4,15 @@ import Footer from './Footer';
 
 export default function Layout(props) {
   return (
-    <>
+    <div className="wrapper">
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header items={props.items} />
 
-      <main style={{ padding: 30 }}>{props.children}</main>
+      <main style={{ paddingBottom: 90 }}>{props.children}</main>
 
       <Footer />
-    </>
+    </div>
   );
 }

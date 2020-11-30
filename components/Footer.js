@@ -2,13 +2,14 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer
+      className="footer"
       style={{
         display: 'flex',
         justifyContent: 'space-between',
         padding: 30,
         background:
           'linear-gradient(90deg, rgb(255, 0, 0) 0%, rgb(255, 200, 200) 35%, rgb(255,255,255) 100%)',
-        marginbottom: 40,
+        marginbottom: 0,
       }}
     >
       <div>
